@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Very Important Question</title>
+    <style>
+        body { 
+            font-family: 'Trebuchet MS', sans-serif; 
+            background-color: #e0f7fa; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+            overflow: hidden; 
+            text-align: center; 
+        }
+        .container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            max-width: 400px; 
+            width: 90%; 
+        }
+        .hidden { display: none !important; }
+        button { 
+            font-family: inherit; 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 8px; 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            margin: 10px; 
+            transition: 0.2s; 
+            font-weight: bold;
+        }
+        #btn-yes { background-color: #4CAF50; color: white; font-size: 24px; padding: 15px 35px; }
+        #btn-yes:hover { transform: scale(1.1); }
+        #btn-no { background-color: #9e9e9e; color: white; position: relative; }
+        img { width: 200px; border-radius: 10px; margin-bottom: 20px; }
+        select, input { 
+            width: 90%; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            border: 1px solid #ccc; 
+            font-family: inherit; 
+        }
+        #ticket { 
+            border: 2px dashed #333; 
+            padding: 20px; 
+            background-color: #fff9c4; 
+            border-radius: 10px; 
+            margin-top: 20px; 
+            text-align: left;
+        }
+        #send-email-btn { 
+            background-color: #2196F3; 
+            color: white; 
+            text-decoration: none; 
+            display: inline-block; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            margin-top: 20px; 
+            font-weight: bold; 
+            transition: 0.2s;
+        }
+        #send-email-btn:hover { background-color: #1976D2; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+<!-- STEP 1: The Question -->
+<div id="step1" class="container">
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2JpZ2oxcWVpMHRydzNqY3FwZ2J6ZnR1Z2Fwc3Z5YXk4aGNtbzJ6NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Vz2y3MGGz1TQA/giphy.gif" alt="Funny cat">
+    <h2>Will you go out with me?</h2>
+    <p style="color: #666; font-size: 14px;">(Be careful, there is only one correct answer...)</p>
+    <button id="btn-yes" onclick="showStep2()">YES!</button>
+    <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">No</button>
+</div>
+
+<!-- STEP 2: The Details -->
+<div id="step2" class="container hidden">
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2p1b25qM3ExYXo5am1wcm4ydzEwdm9sM3Ewdm8weXQzbWp3c2s2aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3sZxY5zS5B0z5zMIz/giphy.gif" alt="Happy dance cat">
+    <h2>Yay! I knew you couldn't resist! 😎</h2>
+    <p>Let's set the details for our date.</p>
+    
+    <div style="text-align: left;">
+        <label><b>Activity:</b></label>
+        <select id="activity">
+            <option value="Coffee & Gossip ☕">Coffee & Gossip ☕</option>
+            <option value="Dinner (I'll pay... probably) 🍕">Dinner (I'll pay... probably) 🍕</option>
+            <option value="Movie & Popcorn 🎬">Movie & Popcorn 🎬</option>
+            <option value="Awkward Park Walk 🌳">Awkward Park Walk 🌳</option>
+            <option value="Bank Heist 💰">Bank Heist 💰</option>
+        </select>
+
+        <label><b>Date:</b></label>
+        <input type="date" id="date">
+
+        <label><b>Time:</b></label>
+        <input type="time" id="time">
+    </div>
+
+    <button style="background-color: #ff9800; color: white; width: 100%; margin: 15px 0 0 0;" onclick="generateTicket()">Create Date Ticket!</button>
+</div>
+
+<!-- STEP 3: The Ticket & Email -->
+<div id="step3" class="container hidden">
+    <h2>🎉 Official Date Ticket 🎉</h2>
+    <div id="ticket">
+        <p><strong>Status:</strong> <span style="color: green; font-weight: bold;">CONFIRMED ✅</span></p>
+        <p><strong>Activity:</strong> <span id="t-activity"></span></p>
+        <p><strong>Date:</strong> <span id="t-date"></span></p>
+        <p><strong>Time:</strong> <span id="t-time"></span></p>
+        <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
+        <p style="font-size: 11px; color: #777; margin-top: 5px;">*No cancellations allowed. By accepting this ticket, you agree to have an awesome time.</p>
+    </div>
+    
+    <!-- Email Butonu -->
+    <a id="send-email-btn" href="#">Send Ticket to Ahmet 🚀</a>
+</div>
+
+<script>
+    // Hayır butonunu kaçırma fonksiyonu
+    function moveButton() {
+        const btn = document.getElementById('btn-no');
+        const x = Math.random() * (window.innerWidth - btn.clientWidth - 20);
+        const y = Math.random() * (window.innerHeight - btn.clientHeight - 20);
+        btn.style.position = 'fixed';
+        btn.style.left = `${Math.max(10, x)}px`;
+        btn.style.top = `${Math.max(10, y)}px`;
+    }
+
+    // İkinci adıma geçiş
+    function showStep2() {
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('step2').classList.remove('hidden');
+    }
+
+    // Bilet oluşturma ve mail linkini ayarlama
+    function generateTicket() {
+        const activity = document.getElementById('activity').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+
+        if (!date || !time) {
+            alert("Hey! You have to pick a date and time!");
+            return;
+        }
+
+        // Bilet bilgilerini doldur
+        document.getElementById('t-activity').innerText = activity;
+        document.getElementById('t-date').innerText = date;
+        document.getElementById('t-time').innerText = time;
+
+        // Son ekrana geç
+        document.getElementById('step2').classList.add('hidden');
+        document.getElementById('step3').classList.remove('hidden');
+
+        // Mailto linkini oluştur (Senin mail adresin)
+        const email = "ahmetyasintopcu3@gmail.com";
+        const subject = encodeURIComponent("It's a Date! 🎉");
+        const body = encodeURIComponent(`Hey Ahmet,\n\nI accept! Here is our official date ticket:\n\nActivity: ${activity}\nDate: ${date}\nTime: ${time}\n\nSee you then!`);
+        
+        document.getElementById('send-email-btn').href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+</script>
+</body>
+</html>
