@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Very Important Question</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <title>A Tiny Ask</title>
+    <!-- Görseldeki zarif fontlar için Google Fonts ekliyoruz -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { 
             font-family: 'Nunito', sans-serif; 
-            background-color: #fce4ec; 
+            background-color: #f6f5f0; /* Görseldeki kırık beyaz arka plan */
             display: flex; 
             flex-direction: column; 
             align-items: center; 
@@ -18,23 +19,288 @@
             overflow: hidden; 
             text-align: center; 
         }
+        
+        /* 1. Sayfa Tasarımı (Görseldeki gibi) */
+        .step1-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tiny-ask {
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: #7a7a7a;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 55px;
+            color: #333;
+            line-height: 1.1;
+            margin: 0 0 10px 0;
+            font-weight: 500;
+        }
+        .out-text {
+            color: #c5574a; /* Görseldeki kırmızı/mercan rengi */
+            font-style: italic;
+        }
+        .so-shy {
+            font-size: 18px;
+            color: #555;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Çiçek Tasarımı */
+        .flower-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 10px auto 30px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .petal {
+            position: absolute;
+            width: 50px;
+            height: 130px;
+            background-color: rgba(209, 142, 136, 0.35); /* Şeffaf pastel yapraklar */
+            border-radius: 50px;
+            border: 1px solid rgba(209, 142, 136, 0.5);
+            transform-origin: center;
+        }
+        .petal:nth-child(1) { transform: rotate(0deg); }
+        .petal:nth-child(2) { transform: rotate(72deg); }
+        .petal:nth-child(3) { transform: rotate(144deg); }
+        .petal:nth-child(4) { transform: rotate(216deg); }
+        .petal:nth-child(5) { transform: rotate(288deg); }
+        
+        .play-btn {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background-color: #6d6b63;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .play-btn::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 14px solid white;
+            margin-left: 4px;
+        }
+
+        /* 1. Sayfa Butonları */
+        .buttons-wrapper {
+            width: 90%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #btn-yes { 
+            background-color: #d1dfca; /* Görseldeki dev yeşil buton rengi */
+            color: #3b4b32; /* Koyu yeşil yazı rengi */
+            font-size: 40px; 
+            padding: 20px; 
+            width: 100%;
+            border: none;
+            border-radius: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        #btn-yes:hover { transform: scale(1.05); background-color: #c3d3bc; }
+        
+        #btn-no { 
+            background-color: transparent; 
+            color: #888; 
+            border: 1px solid #ccc;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 20px;
+            cursor: pointer;
+            position: relative;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+        }
+
+        /* 2. ve 3. Sayfa Tasarımı (Değişmedi, Beyaz Kutu İçinde) */
         .container { 
             background: white; 
             padding: 40px; 
             border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
             max-width: 450px; 
             width: 90%; 
         }
         .hidden { display: none !important; }
-        h2 {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        button { 
+        h2 { font-size: 28px; color: #333; margin-bottom: 10px; }
+        .standard-btn { 
             font-family: inherit; 
             cursor: pointer; 
+            border: none; 
+            border-radius: 12px; 
+            padding: 12px 25px; 
+            font-size: 18px; 
+            transition: 0.2s; 
+            font-weight: 900;
+        }
+        img { width: 250px; border-radius: 15px; margin-bottom: 20px; }
+        select, input { 
+            width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; 
+            border: 2px solid #f8bbd0; font-family: inherit; font-size: 16px; font-weight: 700;
+        }
+        select:focus, input:focus { outline: none; border-color: #e91e63; }
+        #ticket { 
+            border: 3px dashed #e91e63; padding: 20px; background-color: #fff0f5; 
+            border-radius: 15px; margin-top: 20px; text-align: left; font-size: 16px;
+        }
+        #send-email-btn { 
+            background-color: #2196F3; color: white; text-decoration: none; 
+            display: inline-block; padding: 15px 25px; border-radius: 12px; 
+            margin-top: 25px; font-size: 18px; font-weight: 900; transition: 0.2s;
+        }
+        #send-email-btn:hover { background-color: #1976D2; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+<!-- ADIM 1: Soru (Görseldeki Tasarım) -->
+<div id="step1" class="step1-container">
+    <div class="tiny-ask">A TINY ASK</div>
+    <h1 class="main-title">Will you go<br><span class="out-text">out</span> with me?</h1>
+    <div class="so-shy">So shy.</div>
+    
+    <!-- Çiçek ve Play Butonu -->
+    <div class="flower-wrapper">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="play-btn" onclick="showStep2()"></div>
+    </div>
+
+    <!-- Butonlar -->
+    <div class="buttons-wrapper">
+        <button id="btn-yes" onclick="showStep2()">YES</button>
+        <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">No</button>
+    </div>
+</div>
+
+<!-- ADIM 2: Detaylar -->
+<div id="step2" class="container hidden">
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2p1b25qM3ExYXo5am1wcm4ydzEwdm9sM3Ewdm8weXQzbWp3c2s2aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3sZxY5zS5B0z5zMIz/giphy.gif" alt="Happy dance cat">
+    <h2>Best. Decision. Ever. 🥂</h2>
+    <p style="font-weight: 700; color: #555;">My heart just did a little backflip. Let's plan the magic.</p>
+    
+    <div style="text-align: left;">
+        <label><b>Vibe:</b></label>
+        <select id="activity">
+            <option value="Candlelight Dinner & Deep Talks 🍷">Candlelight Dinner & Deep Talks 🍷</option>
+            <option value="Coffee, Cake & Endless Gazing 🍰">Coffee, Cake & Endless Gazing 🍰</option>
+            <option value="A quick trip to Paris for Louvre & Croissants ✈️🥐">A quick trip to Paris for Louvre & Croissants ✈️🥐</option>
+            <option value="Movie Night (We will actually watch it) 🍿">Movie Night (We will actually watch it) 🍿</option>
+            <option value="Awkward Park Walk & Holding Hands 🌳">Awkward Park Walk & Holding Hands 🌳</option>
+        </select>
+
+        <label><b>Date:</b></label>
+        <input type="date" id="date">
+
+        <label><b>Time:</b></label>
+        <input type="time" id="time">
+    </div>
+
+    <button class="standard-btn" style="background-color: #ff9800; color: white; width: 95%; margin: 20px 0 0 0; padding: 15px;" onclick="generateTicket()">Seal the Deal 💌</button>
+</div>
+
+<!-- ADIM 3: Bilet ve Mail -->
+<div id="step3" class="container hidden">
+    <h2>🎫 Golden Date Ticket 🎫</h2>
+    <div id="ticket">
+        <p><strong>Status:</strong> <span style="color: #e91e63; font-weight: 900;">LOCKED IN 🔒💘</span></p>
+        <p><strong>Vibe:</strong> <span id="t-activity"></span></p>
+        <p><strong>When:</strong> <span id="t-date"></span></p>
+        <p><strong>Time:</strong> <span id="t-time"></span></p>
+        <hr style="border: 0; border-top: 2px dashed #e91e63; margin: 15px 0;">
+        <p style="font-size: 12px; color: #777; margin-top: 5px; font-weight: 700;">*Terms & Conditions: By accepting this ticket, you are legally obligated to let me tell you how pretty you look, and you must laugh at least once at my terrible jokes.</p>
+    </div>
+    
+    <a id="send-email-btn" href="#">Send Ticket to Ahmet 🚀</a>
+</div>
+
+<script>
+    const noTexts = [
+        "Think again! 🧐",
+        "Are you sure? 💔",
+        "Try the other button! ➡️",
+        "Error 404 🚫",
+        "Not an option! 😂",
+        "Oops, slipped! 🏃‍♂️",
+        "You misclicked! 😬",
+        "Nice try! 😜",
+        "Stop it! 🛑"
+    ];
+
+    function moveButton() {
+        const btn = document.getElementById('btn-no');
+        
+        const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
+        btn.innerText = randomText;
+
+        const x = Math.random() * (window.innerWidth - btn.clientWidth - 20);
+        const y = Math.random() * (window.innerHeight - btn.clientHeight - 20);
+        btn.style.position = 'fixed';
+        btn.style.left = `${Math.max(10, x)}px`;
+        btn.style.top = `${Math.max(10, y)}px`;
+    }
+
+    function showStep2() {
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('step2').classList.remove('hidden');
+    }
+
+    function generateTicket() {
+        const activity = document.getElementById('activity').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+
+        if (!date || !time) {
+            alert("Please pick a date and time so I can start counting down the minutes! ⏳");
+            return;
+        }
+
+        document.getElementById('t-activity').innerText = activity;
+        document.getElementById('t-date').innerText = date;
+        document.getElementById('t-time').innerText = time;
+
+        document.getElementById('step2').classList.add('hidden');
+        document.getElementById('step3').classList.remove('hidden');
+
+        const email = "ahmetyasintopcu3@gmail.com";
+        const subject = encodeURIComponent("I said YES! 💖");
+        const body = encodeURIComponent(`Hey Ahmet,\n\nI made the best decision ever! Here are the details for our date:\n\nVibe: ${activity}\nWhen: ${date}\nTime: ${time}\n\nCan't wait! 🥰`);
+        
+        document.getElementById('send-email-btn').href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+</script>
+</body>
+</html>            cursor: pointer; 
             border: none; 
             border-radius: 12px; 
             padding: 12px 25px; 
