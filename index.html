@@ -4,474 +4,343 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Tiny Ask</title>
-    <!-- Görseldeki zarif fontlar için Google Fonts ekliyoruz -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { 
-            font-family: 'Nunito', sans-serif; 
-            background-color: #f6f5f0; /* Görseldeki kırık beyaz arka plan */
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            margin: 0; 
-            overflow: hidden; 
-            text-align: center; 
+        :root {
+            --bg-color: #f6f5f0;
+            --primary-green: #a3b18a;
+            --primary-green-hover: #8e9e75;
+            --text-dark: #2c3e50;
+            --text-muted: #7f8c8d;
+            --accent: #d35400;
         }
-        
-        /* 1. Sayfa Tasarımı (Görseldeki gibi) */
-        .step1-container {
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
             width: 100%;
             max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: center;
         }
+
+        /* Helpers */
+        .hidden { display: none !important; }
+        
+        /* Typography */
         .tiny-ask {
             font-size: 13px;
             letter-spacing: 3px;
-            color: #7a7a7a;
+            color: var(--text-muted);
             text-transform: uppercase;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 15px;
         }
+
         .main-title {
             font-family: 'Playfair Display', serif;
-            font-size: 55px;
-            color: #333;
-            line-height: 1.1;
+            font-size: 42px;
+            line-height: 1.2;
             margin: 0 0 10px 0;
-            font-weight: 500;
+            font-weight: 700;
         }
-        .out-text {
-            color: #c5574a; /* Görseldeki kırmızı/mercan rengi */
+
+        .highlight {
+            color: var(--accent);
             font-style: italic;
         }
-        .so-shy {
-            font-size: 18px;
-            color: #555;
-            margin-top: 15px;
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            font-family: 'Nunito', sans-serif;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 800;
+        }
+
+        .btn-yes {
+            background-color: var(--primary-green);
+            color: #ffffff;
+            font-size: 28px;
+            padding: 18px 40px;
+            width: 100%;
+            box-shadow: 0 8px 15px rgba(163, 177, 138, 0.4);
+        }
+
+        .btn-yes:hover {
+            background-color: var(--primary-green-hover);
+            transform: scale(1.02);
+        }
+
+        .btn-no {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid #bdc3c7;
+            padding: 10px 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 50;
+        }
+
+        /* Forms & Inputs */
+        .card {
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        img.gif {
+            width: 180px;
+            border-radius: 15px;
             margin-bottom: 20px;
         }
 
-        /* Çiçek Tasarımı */
-        .flower-wrapper {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 10px auto 30px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .petal {
-            position: absolute;
-            width: 50px;
-            height: 130px;
-            background-color: rgba(209, 142, 136, 0.35); /* Şeffaf pastel yapraklar */
-            border-radius: 50px;
-            border: 1px solid rgba(209, 142, 136, 0.5);
-            transform-origin: center;
-        }
-        .petal:nth-child(1) { transform: rotate(0deg); }
-        .petal:nth-child(2) { transform: rotate(72deg); }
-        .petal:nth-child(3) { transform: rotate(144deg); }
-        .petal:nth-child(4) { transform: rotate(216deg); }
-        .petal:nth-child(5) { transform: rotate(288deg); }
-        
-        .play-btn {
-            position: absolute;
-            width: 55px;
-            height: 55px;
-            background-color: #6d6b63;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .play-btn::after {
-            content: '';
-            width: 0;
-            height: 0;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-            border-left: 14px solid white;
-            margin-left: 4px;
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
         }
 
-        /* 1. Sayfa Butonları */
-        .buttons-wrapper {
-            width: 90%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        #btn-yes { 
-            background-color: #d1dfca; /* Görseldeki dev yeşil buton rengi */
-            color: #3b4b32; /* Koyu yeşil yazı rengi */
-            font-size: 40px; 
-            padding: 20px; 
-            width: 100%;
-            border: none;
-            border-radius: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        #btn-yes:hover { transform: scale(1.05); background-color: #c3d3bc; }
-        
-        #btn-no { 
-            background-color: transparent; 
-            color: #888; 
-            border: 1px solid #ccc;
-            padding: 8px 20px;
-            border-radius: 8px;
+        label {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: var(--text-dark);
             font-size: 14px;
-            margin-top: 20px;
-            cursor: pointer;
-            position: relative;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
         }
 
-        /* 2. ve 3. Sayfa Tasarımı (Değişmedi, Beyaz Kutu İçinde) */
-        .container { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-            max-width: 450px; 
-            width: 90%; 
-        }
-        .hidden { display: none !important; }
-        h2 { font-size: 28px; color: #333; margin-bottom: 10px; }
-        .standard-btn { 
-            font-family: inherit; 
-            cursor: pointer; 
-            border: none; 
-            border-radius: 12px; 
-            padding: 12px 25px; 
-            font-size: 18px; 
-            transition: 0.2s; 
-            font-weight: 900;
-        }
-        img { width: 250px; border-radius: 15px; margin-bottom: 20px; }
-        select, input { 
-            width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; 
-            border: 2px solid #f8bbd0; font-family: inherit; font-size: 16px; font-weight: 700;
-        }
-        select:focus, input:focus { outline: none; border-color: #e91e63; }
-        #ticket { 
-            border: 3px dashed #e91e63; padding: 20px; background-color: #fff0f5; 
-            border-radius: 15px; margin-top: 20px; text-align: left; font-size: 16px;
-        }
-        #send-email-btn { 
-            background-color: #2196F3; color: white; text-decoration: none; 
-            display: inline-block; padding: 15px 25px; border-radius: 12px; 
-            margin-top: 25px; font-size: 18px; font-weight: 900; transition: 0.2s;
-        }
-        #send-email-btn:hover { background-color: #1976D2; transform: scale(1.05); }
-    </style>
-</head>
-<body>
-
-<!-- ADIM 1: Soru (Görseldeki Tasarım) -->
-<div id="step1" class="step1-container">
-    <div class="tiny-ask">A TINY ASK</div>
-    <h1 class="main-title">Will you go<br><span class="out-text">out</span> with me?</h1>
-    <div class="so-shy">So shy.</div>
-    
-    <!-- Çiçek ve Play Butonu -->
-    <div class="flower-wrapper">
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="play-btn" onclick="showStep2()"></div>
-    </div>
-
-    <!-- Butonlar -->
-    <div class="buttons-wrapper">
-        <button id="btn-yes" onclick="showStep2()">YES</button>
-        <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">No</button>
-    </div>
-</div>
-
-<!-- ADIM 2: Detaylar -->
-<div id="step2" class="container hidden">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2p1b25qM3ExYXo5am1wcm4ydzEwdm9sM3Ewdm8weXQzbWp3c2s2aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3sZxY5zS5B0z5zMIz/giphy.gif" alt="Happy dance cat">
-    <h2>Best. Decision. Ever. 🥂</h2>
-    <p style="font-weight: 700; color: #555;">My heart just did a little backflip. Let's plan the magic.</p>
-    
-    <div style="text-align: left;">
-        <label><b>Vibe:</b></label>
-        <select id="activity">
-            <option value="Candlelight Dinner & Deep Talks 🍷">Candlelight Dinner & Deep Talks 🍷</option>
-            <option value="Coffee, Cake & Endless Gazing 🍰">Coffee, Cake & Endless Gazing 🍰</option>
-            <option value="A quick trip to Paris for Louvre & Croissants ✈️🥐">A quick trip to Paris for Louvre & Croissants ✈️🥐</option>
-            <option value="Movie Night (We will actually watch it) 🍿">Movie Night (We will actually watch it) 🍿</option>
-            <option value="Awkward Park Walk & Holding Hands 🌳">Awkward Park Walk & Holding Hands 🌳</option>
-        </select>
-
-        <label><b>Date:</b></label>
-        <input type="date" id="date">
-
-        <label><b>Time:</b></label>
-        <input type="time" id="time">
-    </div>
-
-    <button class="standard-btn" style="background-color: #ff9800; color: white; width: 95%; margin: 20px 0 0 0; padding: 15px;" onclick="generateTicket()">Seal the Deal 💌</button>
-</div>
-
-<!-- ADIM 3: Bilet ve Mail -->
-<div id="step3" class="container hidden">
-    <h2>🎫 Golden Date Ticket 🎫</h2>
-    <div id="ticket">
-        <p><strong>Status:</strong> <span style="color: #e91e63; font-weight: 900;">LOCKED IN 🔒💘</span></p>
-        <p><strong>Vibe:</strong> <span id="t-activity"></span></p>
-        <p><strong>When:</strong> <span id="t-date"></span></p>
-        <p><strong>Time:</strong> <span id="t-time"></span></p>
-        <hr style="border: 0; border-top: 2px dashed #e91e63; margin: 15px 0;">
-        <p style="font-size: 12px; color: #777; margin-top: 5px; font-weight: 700;">*Terms & Conditions: By accepting this ticket, you are legally obligated to let me tell you how pretty you look, and you must laugh at least once at my terrible jokes.</p>
-    </div>
-    
-    <a id="send-email-btn" href="#">Send Ticket to Ahmet 🚀</a>
-</div>
-
-<script>
-    const noTexts = [
-        "Think again! 🧐",
-        "Are you sure? 💔",
-        "Try the other button! ➡️",
-        "Error 404 🚫",
-        "Not an option! 😂",
-        "Oops, slipped! 🏃‍♂️",
-        "You misclicked! 😬",
-        "Nice try! 😜",
-        "Stop it! 🛑"
-    ];
-
-    function moveButton() {
-        const btn = document.getElementById('btn-no');
-        
-        const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
-        btn.innerText = randomText;
-
-        const x = Math.random() * (window.innerWidth - btn.clientWidth - 20);
-        const y = Math.random() * (window.innerHeight - btn.clientHeight - 20);
-        btn.style.position = 'fixed';
-        btn.style.left = `${Math.max(10, x)}px`;
-        btn.style.top = `${Math.max(10, y)}px`;
-    }
-
-    function showStep2() {
-        document.getElementById('step1').classList.add('hidden');
-        document.getElementById('step2').classList.remove('hidden');
-    }
-
-    function generateTicket() {
-        const activity = document.getElementById('activity').value;
-        const date = document.getElementById('date').value;
-        const time = document.getElementById('time').value;
-
-        if (!date || !time) {
-            alert("Please pick a date and time so I can start counting down the minutes! ⏳");
-            return;
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            box-sizing: border-box;
+            background-color: #fafafa;
         }
 
-        document.getElementById('t-activity').innerText = activity;
-        document.getElementById('t-date').innerText = date;
-        document.getElementById('t-time').innerText = time;
-
-        document.getElementById('step2').classList.add('hidden');
-        document.getElementById('step3').classList.remove('hidden');
-
-        const email = "ahmetyasintopcu3@gmail.com";
-        const subject = encodeURIComponent("I said YES! 💖");
-        const body = encodeURIComponent(`Hey Ahmet,\n\nI made the best decision ever! Here are the details for our date:\n\nVibe: ${activity}\nWhen: ${date}\nTime: ${time}\n\nCan't wait! 🥰`);
-        
-        document.getElementById('send-email-btn').href = `mailto:${email}?subject=${subject}&body=${body}`;
-    }
-</script>
-</body>
-</html>            cursor: pointer; 
-            border: none; 
-            border-radius: 12px; 
-            padding: 12px 25px; 
-            font-size: 18px; 
-            margin: 10px; 
-            transition: 0.2s; 
-            font-weight: 900;
-        }
-        #btn-yes { 
-            background-color: #e91e63; 
-            color: white; 
-            font-size: 26px; 
-            padding: 15px 40px; 
-        }
-        #btn-yes:hover { 
-            transform: scale(1.15); 
-            box-shadow: 0 0 20px rgba(233, 30, 99, 0.6); 
-        }
-        #btn-no { 
-            background-color: #9e9e9e; 
-            color: white; 
-            position: relative; 
-        }
-        img { width: 250px; border-radius: 15px; margin-bottom: 20px; }
-        select, input { 
-            width: 90%; 
-            padding: 12px; 
-            margin: 10px 0; 
-            border-radius: 8px; 
-            border: 2px solid #f8bbd0; 
-            font-family: inherit; 
-            font-size: 16px;
-            font-weight: 700;
-        }
         select:focus, input:focus {
             outline: none;
-            border-color: #e91e63;
+            border-color: var(--primary-green);
         }
-        #ticket { 
-            border: 3px dashed #e91e63; 
-            padding: 20px; 
-            background-color: #fff0f5; 
-            border-radius: 15px; 
-            margin-top: 20px; 
-            text-align: left;
-            font-size: 16px;
-        }
-        #send-email-btn { 
-            background-color: #2196F3; 
-            color: white; 
-            text-decoration: none; 
-            display: inline-block; 
-            padding: 15px 25px; 
-            border-radius: 12px; 
-            margin-top: 25px; 
+
+        .btn-submit {
+            background-color: var(--text-dark);
+            color: white;
+            width: 100%;
+            padding: 15px;
             font-size: 18px;
-            font-weight: 900; 
-            transition: 0.2s;
+            margin-top: 15px;
         }
-        #send-email-btn:hover { background-color: #1976D2; transform: scale(1.05); }
+
+        .btn-submit:hover {
+            background-color: #1a252f;
+        }
+
+        /* Ticket */
+        .ticket {
+            border: 2px dashed var(--primary-green);
+            padding: 25px;
+            background-color: #f9fbf9;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .ticket p {
+            margin: 8px 0;
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+
+        .btn-email {
+            background-color: var(--primary-green);
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 18px;
+            font-weight: 800;
+            box-shadow: 0 5px 15px rgba(163, 177, 138, 0.4);
+        }
+
+        .btn-email:hover {
+            background-color: var(--primary-green-hover);
+            transform: scale(1.02);
+        }
     </style>
 </head>
 <body>
 
-<div id="step1" class="container">
-    <img src="https://media.tenor.com/FwIe16B-kYQAAAAi/cat-pls.gif" alt="Cute begging cat">
-    <h2>Will you do me the honor of going on a date with me? 🥺</h2>
-    <p style="color: #777; font-size: 15px; font-weight: 700;">(Disclaimer: Saying no is scientifically proven to break my heart.)</p>
-    
-    <div style="margin-top: 25px;">
-        <button id="btn-yes" onclick="showStep2()">YES! 💖</button>
-        <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">No</button>
-    </div>
-</div>
-
-<div id="step2" class="container hidden">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2p1b25qM3ExYXo5am1wcm4ydzEwdm9sM3Ewdm8weXQzbWp3c2s2aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3sZxY5zS5B0z5zMIz/giphy.gif" alt="Happy dance cat">
-    <h2>Best. Decision. Ever. 🥂</h2>
-    <p style="font-weight: 700; color: #555;">My heart just did a little backflip. Let's plan the magic.</p>
-    
-    <div style="text-align: left;">
-        <label><b>Vibe:</b></label>
-        <select id="activity">
-            <option value="Candlelight Dinner & Deep Talks 🍷">Candlelight Dinner & Deep Talks 🍷</option>
-            <option value="Coffee, Cake & Endless Gazing 🍰">Coffee, Cake & Endless Gazing 🍰</option>
-            <option value="A quick trip to Paris for Louvre & Croissants ✈️🥐">A quick trip to Paris for Louvre & Croissants ✈️🥐</option>
-            <option value="Movie Night (We will actually watch it) 🍿">Movie Night (We will actually watch it) 🍿</option>
-            <option value="Awkward Park Walk & Holding Hands 🌳">Awkward Park Walk & Holding Hands 🌳</option>
-        </select>
-
-        <label><b>Date:</b></label>
-        <input type="date" id="date">
-
-        <label><b>Time:</b></label>
-        <input type="time" id="time">
-    </div>
-
-    <button style="background-color: #ff9800; color: white; width: 95%; margin: 20px 0 0 0; padding: 15px; font-size: 18px;" onclick="generateTicket()">Seal the Deal 💌</button>
-</div>
-
-<div id="step3" class="container hidden">
-    <h2>🎫 Golden Date Ticket 🎫</h2>
-    <div id="ticket">
-        <p><strong>Status:</strong> <span style="color: #e91e63; font-weight: 900;">LOCKED IN 🔒💘</span></p>
-        <p><strong>Vibe:</strong> <span id="t-activity"></span></p>
-        <p><strong>When:</strong> <span id="t-date"></span></p>
-        <p><strong>Time:</strong> <span id="t-time"></span></p>
-        <hr style="border: 0; border-top: 2px dashed #e91e63; margin: 15px 0;">
-        <p style="font-size: 12px; color: #777; margin-top: 5px; font-weight: 700;">*Terms & Conditions: By accepting this ticket, you are legally obligated to let me tell you how pretty you look, and you must laugh at least once at my terrible jokes.</p>
-    </div>
-    
-    <a id="send-email-btn" href="#">Send Ticket to Ahmet 🚀</a>
-</div>
-
-<script>
-    // No butonunun içine yazılacak esprili metinler
-    const noTexts = [
-        "Think again! 🧐",
-        "Are you sure? 💔",
-        "Try the other button! ➡️",
-        "Error 404 🚫",
-        "Not an option! 😂",
-        "Oops, slipped! 🏃‍♂️",
-        "You misclicked! 😬",
-        "Nice try! 😜",
-        "Stop it! 🛑"
-    ];
-
-    function moveButton() {
-        const btn = document.getElementById('btn-no');
+    <!-- STEP 1: The Ask -->
+    <div id="step1" class="container">
+        <div class="tiny-ask">A TINY ASK</div>
+        <h1 class="main-title">Will you go <br><span class="highlight">out</span> with me?</h1>
+        <div class="subtitle">(There is only one correct answer)</div>
         
-        // Rastgele yeni bir metin seç ve butona yaz
-        const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
-        btn.innerText = randomText;
+        <button id="btn-yes" class="btn btn-yes" onclick="showStep(2)">YES</button>
+        <button id="btn-no" class="btn btn-no">No</button>
+    </div>
 
-        // Butonu ekran sınırları içinde rastgele bir konuma taşı
-        const x = Math.random() * (window.innerWidth - btn.clientWidth - 20);
-        const y = Math.random() * (window.innerHeight - btn.clientHeight - 20);
-        btn.style.position = 'fixed';
-        btn.style.left = `${Math.max(10, x)}px`;
-        btn.style.top = `${Math.max(10, y)}px`;
-    }
+    <!-- STEP 2: The Form -->
+    <div id="step2" class="container card hidden">
+        <img src="https://media.giphy.com/media/t3sZxY5zS5B0z5zMIz/giphy.gif" alt="Happy cat" class="gif">
+        <h2 class="main-title" style="font-size: 28px;">Great Choice!</h2>
+        <p class="subtitle" style="margin-bottom: 20px;">Let's plan the details.</p>
+        
+        <div class="form-group">
+            <label>Vibe:</label>
+            <select id="activity">
+                <option value="A Nice Dinner">A Nice Dinner</option>
+                <option value="Coffee & Dessert Cravings">Coffee & Dessert Cravings</option>
+                <option value="Movie & Popcorn">Movie & Popcorn</option>
+                <option value="A 2-day trip to Paris & The Louvre (Sept 28-29)">A 2-day trip to Paris & The Louvre (Sept 28-29)</option>
+                <option value="Bank Heist">Bank Heist</option>
+            </select>
+        </div>
 
-    function showStep2() {
-        document.getElementById('step1').classList.add('hidden');
-        document.getElementById('step2').classList.remove('hidden');
-    }
+        <div class="form-group">
+            <label>Date:</label>
+            <input type="date" id="date">
+        </div>
 
-    function generateTicket() {
-        const activity = document.getElementById('activity').value;
-        const date = document.getElementById('date').value;
-        const time = document.getElementById('time').value;
+        <div class="form-group">
+            <label>Time:</label>
+            <input type="time" id="time">
+        </div>
 
-        if (!date || !time) {
-            alert("Please pick a date and time so I can start counting down the minutes! ⏳");
-            return;
+        <button class="btn btn-submit" onclick="generateTicket()">Confirm Plan</button>
+    </div>
+
+    <!-- STEP 3: The Ticket -->
+    <div id="step3" class="container card hidden">
+        <h2 class="main-title" style="font-size: 28px;">Official Date Ticket</h2>
+        
+        <div class="ticket">
+            <p><strong>Status:</strong> <span style="color: var(--primary-green); font-weight: 900;">CONFIRMED</span></p>
+            <p><strong>Vibe:</strong> <span id="t-activity"></span></p>
+            <p><strong>Date:</strong> <span id="t-date"></span></p>
+            <p><strong>Time:</strong> <span id="t-time"></span></p>
+        </div>
+        
+        <a id="btn-email" href="#" class="btn-email">Send Ticket to Ahmet</a>
+    </div>
+
+    <script>
+        // DOM Elements
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+        const btnNo = document.getElementById('btn-no');
+
+        // Funny phrases for the "No" button
+        const noPhrases = [
+            "Are you sure?",
+            "Wrong button!",
+            "Think again...",
+            "Not an option!",
+            "Oops, missed!",
+            "Try the green one",
+            "Error 404: No not found",
+            "I'm fast as boy!"
+        ];
+
+        // Step Navigation
+        function showStep(stepNumber) {
+            step1.classList.add('hidden');
+            step2.classList.add('hidden');
+            step3.classList.add('hidden');
+
+            if (stepNumber === 2) step2.classList.remove('hidden');
+            if (stepNumber === 3) step3.classList.remove('hidden');
         }
 
-        document.getElementById('t-activity').innerText = activity;
-        document.getElementById('t-date').innerText = date;
-        document.getElementById('t-time').innerText = time;
+        // Make the "No" button run away
+        function evadeCursor() {
+            // Change text randomly
+            const randomPhrase = noPhrases[Math.floor(Math.random() * noPhrases.length)];
+            btnNo.innerText = randomPhrase;
 
-        document.getElementById('step2').classList.add('hidden');
-        document.getElementById('step3').classList.remove('hidden');
+            // Make it absolute/fixed to move around the screen
+            btnNo.style.position = 'fixed';
+            
+            // Calculate safe bounds to keep button inside the window
+            const maxX = window.innerWidth - btnNo.offsetWidth - 20;
+            const maxY = window.innerHeight - btnNo.offsetHeight - 20;
 
-        const email = "ahmetyasintopcu3@gmail.com";
-        const subject = encodeURIComponent("I said YES! 💖");
-        const body = encodeURIComponent(`Hey Ahmet,\n\nI made the best decision ever! Here are the details for our date:\n\nVibe: ${activity}\nWhen: ${date}\nTime: ${time}\n\nCan't wait! 🥰`);
-        
-        document.getElementById('send-email-btn').href = `mailto:${email}?subject=${subject}&body=${body}`;
-    }
-</script>
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+        }
+
+        // Attach event listeners for mouse and touch
+        btnNo.addEventListener('mouseover', evadeCursor);
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent accidental clicking on mobile
+            evadeCursor();
+        });
+
+        // Form handling and Ticket generation
+        function generateTicket() {
+            const activity = document.getElementById('activity').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+
+            if (!date || !time) {
+                alert("Please select a date and time!");
+                return;
+            }
+
+            // Populate the ticket
+            document.getElementById('t-activity').innerText = activity;
+            document.getElementById('t-date').innerText = date;
+            document.getElementById('t-time').innerText = time;
+
+            // Generate the Mailto Link
+            const email = "ahmetyasintopcu3@gmail.com";
+            const subject = encodeURIComponent("I said YES!");
+            const body = encodeURIComponent(
+                "Hi Ahmet,\n\nI accept! Here are our date details:\n\n" +
+                "Vibe: " + activity + "\n" +
+                "Date: " + date + "\n" +
+                "Time: " + time + "\n\n" +
+                "See you then!"
+            );
+            
+            document.getElementById('btn-email').href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
+
+            // Go to Step 3
+            showStep(3);
+        }
+    </script>
 </body>
 </html>
